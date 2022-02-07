@@ -26,12 +26,17 @@ public class AoC9 {
             line.chars().forEach(c -> ints.add(Character.getNumericValue(c)));
             heightMap.add(ints);
         }
+        partOne();
+        partTwo();
+    }
 
+    public static void partOne() {
         initializeCountedCoordinates();
         registerLowPoints();
-
         System.out.println("Answer to part one: " + lowPoints.stream().mapToInt(Lowpoint::getValue).sum());
+    }
 
+    public static void partTwo() {
         List<Integer> basinSizes = getBasinsizes();
         basinSizes.sort(Comparator.reverseOrder());
 

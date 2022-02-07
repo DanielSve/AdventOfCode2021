@@ -19,9 +19,7 @@ public class AoC1 {
             e.printStackTrace();
         }
 
-        AtomicInteger sum = new AtomicInteger();
-        IntStream.range(1, depths.size()).forEach(
-                i -> sum.set(depths.get(i) > (depths.get(i-1)) ? (sum.get() +1) : sum.get()));
+        int sum = (int) IntStream.range(1, depths.size()).filter(i -> depths.get(i) > depths.get(i - 1)).count();
 
         System.out.println("Answer part one: " + sum);
 

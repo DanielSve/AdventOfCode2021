@@ -13,12 +13,18 @@ public class AoC5 {
     private static final List<List<Integer>> marked = new ArrayList<>();
     private static Scanner sc;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         try {
             sc = new Scanner(new File("resources/input5.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        createLinesFromInput();
+        partOne();
+        partTwo();
+    }
+
+    public static void createLinesFromInput() {
         while (sc.hasNextLine()) {
             List<String> tempList = Arrays.stream(sc.nextLine().split(" -> ")).toList();
             List<String> c1 = Arrays.stream(tempList.get(0).split(",")).toList();
@@ -26,17 +32,19 @@ public class AoC5 {
             lines.add(new Line(Integer.parseInt(c1.get(0)), Integer.parseInt(c1.get(1)),
                     Integer.parseInt(c2.get(0)), Integer.parseInt(c2.get(1))));
         }
+    }
 
+    public static void partOne() {
         List<Line> horizontalOrVerticalLines = lines.stream().filter(
                 line -> (line.getX1() == line.getX2() || line.getY1() == line.getY2())).toList();
         initializeMarkedList();
         markCoordinatesFromLines(horizontalOrVerticalLines);
-
         System.out.println("Answer part one: " + marked.stream().flatMap(List::stream).filter(i -> i > 1).count());
+    }
 
+    public static void partTwo() {
         List<Line> diagonalLines = lines.stream().filter(line -> !(line.getX1() == line.getX2() || line.getY1() == line.getY2())).toList();
         markCoordinatesFromLines(diagonalLines);
-
         System.out.println("Answer part two: " + marked.stream().flatMap(List::stream).filter(i -> i > 1).count());
     }
 

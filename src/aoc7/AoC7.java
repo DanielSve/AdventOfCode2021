@@ -27,11 +27,11 @@ public class AoC7 {
         System.out.println("Answer part two: " + getLowest(max,lowest,positions,"two"));
     }
 
-    public static int getLowest(int max, int lowest, List<Integer> integers, String part) {
+    public static int getLowest(int max, int lowest, List<Integer> positions, String part) {
         for (int i = 0; i < max ; i++) {
             int sum = 0;
-            for (int j = 0; j <integers.size() ; j++) {
-                sum = part.equals("one") ? sum + Math.abs(integers.get(j)-i) : sum + getTotalSum(Math.abs(integers.get(j)-i));
+            for (Integer integer : positions) {
+                sum = part.equals("one") ? sum + Math.abs(integer - i) : sum + getTotalSum(Math.abs(integer - i));
             }
             lowest = Math.min(lowest, sum);
         }

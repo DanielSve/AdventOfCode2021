@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 public class AoC8 {
 
     private static Scanner sc;
+    private List<String> rightList;
+    private List<String> leftList;
 
     public AoC8() {
         try {
@@ -15,19 +17,27 @@ public class AoC8 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        separateInput();
+        partOne();
+        partTwo();
+    }
 
-        List<String> rightList = new ArrayList<>();
-        List<String> leftList = new ArrayList<>();
-
+    public void separateInput() {
+        rightList = new ArrayList<>();
+        leftList = new ArrayList<>();
         while (sc.hasNextLine()) {
             List<String> tempList = Arrays.stream(sc.nextLine().split(" \\| ")).toList();
             leftList.add(tempList.get(0));
             rightList.add(tempList.get(1));
         }
-        
+    }
+
+    public void partOne() {
         long amountUnique = getAmountUnique(rightList);
         System.out.println("Answer part one: " + amountUnique);
+    }
 
+    public void partTwo() {
         List<List<String>> leftSortedList = getLeftSortedList(leftList);
         List<List<String>> rightSortedList = getRightSortedList(rightList, leftSortedList);
         List<Integer> outputValues = getOutputList(leftSortedList,rightSortedList);

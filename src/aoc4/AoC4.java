@@ -7,7 +7,7 @@ import java.util.*;
 
 public class AoC4 {
 
-    public static List<String[][]> allTrays= new ArrayList<>();
+    public static List<String[][]> allBoards= new ArrayList<>();
     public static List<Integer> roundForBingo = new ArrayList<>();
     public static List<String> inputLines;
     public static List<String> numbersDrawn;
@@ -15,41 +15,54 @@ public class AoC4 {
     public static void main(String[] args) {
         try {
             inputLines = new LinkedList<>(new BufferedReader(new FileReader("resources/input4.txt")).lines().toList());
-        } catch (FileNotFoundException e) {e.printStackTrace();}
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        partOne();
+        partTwo();
+    }
 
+    public static void partOne() {
         numbersDrawn = Arrays.stream(inputLines.get(0).split(",")).toList();
-        fillTraysFromInput();
-        getBingoRoundAllTrays();
-
+        fillBoardsFromInput();
+        getBingoRoundAllBoards();
         int earliest = roundForBingo.stream().sorted().toList().get(0);
-        int earliestTray = getTrayFromBingoRound(earliest);
-        int amountEarliest = getAmountForTray(allTrays.get(earliestTray));
+        int earliestBoard = getBoardFromBingoRound(earliest);
+        int amountEarliest = getAmountForBoard(allBoards.get(earliestBoard));
         System.out.println("Answer part one " + amountEarliest * Integer.parseInt(numbersDrawn.get(earliest)));
+    }
 
+    public static void partTwo() {
         int latest = roundForBingo.stream().sorted().toList().get(roundForBingo.size()-1);
-        int latestTray = getTrayFromBingoRound(latest);
-        int amountLatest = getAmountForTray(allTrays.get(latestTray));
+        int latestTray = getBoardFromBingoRound(latest);
+        int amountLatest = getAmountForBoard(allBoards.get(latestTray));
         System.out.println("Answer part two " + amountLatest * Integer.parseInt(numbersDrawn.get(latest)));
     }
 
-    public static void getBingoRoundAllTrays() {
-        allTrays.forEach(t -> roundForBingo.add(checkRoundForBingo(t,numbersDrawn)));
+    public static void getBingoRoundAllBoards() {
+        allBoards.forEach(t -> roundForBingo.add(checkRoundForBingo(t,numbersDrawn)));
     }
 
     public static int checkRoundForBingo(String[][] s, List<String> l) {
         for (int i = 0; i <l.size() ; i++) {
-            for (int j = 0; j <s.length ; j++) {
-                for (int k = 0; k <s.length ; k++) {
-                    if(s[j][k].equals(l.get(i))){
-                        s[j][k]="--";
-                    }
-                    if(bingo(s)) {
-                        return i;
-                    }
+            if(checkCurrentBoard(s, l.get(i)))
+            return i;
+        }
+        return 1000;
+    }
+
+    public static boolean checkCurrentBoard(String[][] s, String currentNr) {
+        for (int j = 0; j <s.length ; j++) {
+            for (int k = 0; k <s.length ; k++) {
+                if(s[j][k].equals(currentNr)){
+                    s[j][k]="--";
+                }
+                if(bingo(s)) {
+                    return true;
                 }
             }
         }
-        return 1000;
+        return false;
     }
 
     public static boolean bingo(String[][] s){
@@ -71,19 +84,19 @@ public class AoC4 {
         return false;
     }
 
-    public static int getAmountForTray(String [][] tray) {
+    public static int getAmountForBoard(String [][] board) {
         int sum = 0;
-        for (int i = 0; i <tray.length ; i++) {
-            for (int j = 0; j < tray.length ; j++) {
-                if(!tray[i][j].equals("--")) {
-                    sum = sum + Integer.parseInt(tray[i][j]);
+        for (int i = 0; i <board.length ; i++) {
+            for (int j = 0; j < board.length ; j++) {
+                if(!board[i][j].equals("--")) {
+                    sum = sum + Integer.parseInt(board[i][j]);
                 }
             }
         }
         return sum;
     }
 
-    public static int getTrayFromBingoRound(int round) {
+    public static int getBoardFromBingoRound(int round) {
         for (int i = 0; i <roundForBingo.size() ; i++) {
             if(roundForBingo.get(i) == round) {
                 return i;
@@ -92,14 +105,14 @@ public class AoC4 {
         return -1;
     }
 
-    public static void fillTraysFromInput() {
+    public static void fillBoardsFromInput() {
         inputLines = inputLines.subList(2, inputLines.size());
         String longString = String.join("-", inputLines).replaceAll("--", ":")
         .replaceAll("- ", "-").replaceAll("\s{2}", " ");
         inputLines = new LinkedList<>(List.of(longString.split(":")));
         for (int i = 0; i < inputLines.size(); i++) {
             List<String> temp = Arrays.stream(inputLines.get(i).split("-")).toList();
-            allTrays.add(toStringArr(temp));
+            allBoards.add(toStringArr(temp));
         }
     }
 

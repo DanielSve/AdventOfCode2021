@@ -9,6 +9,8 @@ import java.util.List;
 public class AoC2 {
 
     private static List<String> lines;
+    private static int depth;
+    private static int horizontal;
 
     public static void main(String[] args) {
         try {
@@ -16,17 +18,30 @@ public class AoC2 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        partOne();
+        partTwo();
+    }
 
-        System.out.println("Answer part one: " +
-                lines.stream().filter(s-> s.contains("forward")).mapToInt(s-> Integer.parseInt(s.substring(8))).sum() *
-                (lines.stream().filter(s -> s.contains("down")).mapToInt(s -> Integer.parseInt(s.substring(5))).sum()
-                - lines.stream().filter(s -> s.contains("up")).mapToInt(s -> Integer.parseInt(s.substring(3))).sum()));
+    public static void partOne() {
+        horizontal = 0;
+        depth = 0;
+        for (String line : lines) {
+            List<String> l = Arrays.asList(line.split(" "));
+            switch (l.get(0)) {
+                case "down" -> depth += Integer.parseInt(l.get(1));
+                case "up" -> depth -= Integer.parseInt(l.get(1));
+                case "forward" -> horizontal += Integer.parseInt(l.get(1));
+            }
+        }
+        System.out.println("Answer part one: " + depth * horizontal);
+    }
 
-        int horizontal = 0;
-        int depth = 0;
+    public static void partTwo() {
+        horizontal = 0;
+        depth = 0;
         int aim = 0;
-        for (int i = 0; i <lines.size() ; i++) {
-            List<String> l = Arrays.asList(lines.get(i).split(" "));
+        for (String line : lines) {
+            List<String> l = Arrays.asList(line.split(" "));
             switch (l.get(0)) {
                 case "down" -> aim += Integer.parseInt(l.get(1));
                 case "up" -> aim -= Integer.parseInt(l.get(1));

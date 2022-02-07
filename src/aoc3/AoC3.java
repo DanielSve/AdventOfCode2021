@@ -20,18 +20,22 @@ public class AoC3 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        partOne();
+        partTwo();
+    }
 
+    public static void partOne() {
         List<Integer> mostCommonBits = getmostCommonBits(numbers);
-        String first = getFirstString(mostCommonBits);
-        String second = getSecondString(mostCommonBits);
+        String mostCommon = getFirstString(mostCommonBits);
+        String leastCommon = getSecondString(mostCommonBits);
+        System.out.println("Answer 1: " + Integer.parseInt(String.valueOf(mostCommon),2) * Integer.parseInt(String.valueOf(leastCommon),2));
+    }
 
-        System.out.println("Answer 1: " + Integer.parseInt(String.valueOf(first),2) * Integer.parseInt(String.valueOf(second),2));
-
+    public static void partTwo() {
         char findOxygen = '1';
         char findCO2 = '0';
         String s1 = reduceToCorrectNr(findOxygen, numbers);
         String s2 = reduceToCorrectNr(findCO2, numbers);
-
         System.out.println("Answer 2: " + Integer.parseInt(s1,2) * Integer.parseInt(s2,2));
     }
 

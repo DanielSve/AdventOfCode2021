@@ -21,10 +21,17 @@ public class AoC10 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        partOne();
+        partTwo();
+    }
+
+    public static void partOne() {
         sortRows();
         getCorruptedSigns();
         System.out.println("Answer part one: " + getScorePartOne(corruptedSigns));
+    }
 
+    public static void partTwo() {
         getIncompleteSorted();
         getReversedList();
         getSortedScores();
@@ -37,15 +44,6 @@ public class AoC10 {
 
     public static void getCorruptedSigns() {
         sortedRows.stream().filter(s -> checkCorrupted(s).length()==1).toList().forEach(s -> corruptedSigns.add(checkCorrupted(s)));
-    }
-
-    public static void getSortedScores() {
-        reversed.forEach(e -> sortedScores.add(getScorePartTwo(e)));
-        sortedScores = sortedScores.stream().sorted().toList();
-    }
-
-    public static void getIncompleteSorted() {
-        incompleteSorted = sortedRows.stream().filter(s -> checkCorrupted(s).length()>1).toList();
     }
 
     public static long getScorePartOne(List<String> corrupted) {
@@ -61,6 +59,24 @@ public class AoC10 {
         return sum;
     }
 
+    public static void getIncompleteSorted() {
+        incompleteSorted = sortedRows.stream().filter(s -> checkCorrupted(s).length()>1).toList();
+    }
+
+    public static void getReversedList() {
+        incompleteSorted.forEach(e -> reversed.add(reverseBrackets(e)));
+    }
+
+    public static String reverseBrackets(String s) {
+        return new StringBuilder(s).reverse().toString().replaceAll("\\{","\\}").replaceAll("\\(",
+                "\\)").replaceAll("\\<", "\\>").replaceAll("\\[","\\]");
+    }
+
+    public static void getSortedScores() {
+        reversed.forEach(e -> sortedScores.add(getScorePartTwo(e)));
+        sortedScores = sortedScores.stream().sorted().toList();
+    }
+
     public static long getScorePartTwo(String s) {
         long sum = 0;
         for (int i = 0; i <s.length() ; i++) {
@@ -73,15 +89,6 @@ public class AoC10 {
             }
         }
         return sum;
-    }
-
-    public static void getReversedList() {
-        incompleteSorted.forEach(e -> reversed.add(reverseBrackets(e)));
-    }
-
-    public static String reverseBrackets(String s) {
-        return new StringBuilder(s).reverse().toString().replaceAll("\\{","\\}").replaceAll("\\(",
-                "\\)").replaceAll("\\<", "\\>").replaceAll("\\[","\\]");
     }
 
     public static String getSortedString(String s) {
